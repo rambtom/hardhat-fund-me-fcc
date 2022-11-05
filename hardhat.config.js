@@ -32,6 +32,10 @@ module.exports = {
             chainId: 5,
             blockConfirmations: 6,
         },
+        // localhost: {
+        //     url: "http://localhost:8545",
+        //     chainId: 311337,
+        // },
     },
     solidity: {
         compilers: [

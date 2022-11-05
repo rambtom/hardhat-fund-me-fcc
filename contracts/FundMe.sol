@@ -7,9 +7,10 @@ import "./PriceConverter.sol";
 
 // 3. Interfaces, Libraries, Contracts
 error FundMe__NotOwner();
+error FundMe__SpendETH();
 
 /**@title A sample Funding Contract
- * @author Patrick Collins
+ * @author T.H
  * @notice This contract is for creating a sample funding contract
  * @dev This implements price feeds as our library
  */
@@ -50,11 +51,13 @@ contract FundMe {
 
     /// @notice Funds our contract based on the ETH/USD price
     function fund() public payable {
-        require(
-            msg.value.getConversionRate(s_priceFeed) >= MINIMUM_USD,
-            "You need to spend more ETH!"
-        );
+        // require(
+        //     msg.value.getConversionRate(s_priceFeed) >= MINIMUM_USD,
+        //     "You need to spend more ETH!"
+        // );
         // require(PriceConverter.getConversionRate(msg.value) >= MINIMUM_USD, "You need to spend more ETH!");
+        if (msg.value.getConversionRate(s_priceFeed) <= MINIMUM_USD)
+            revert FundMe__SpendETH();
         s_addressToAmountFunded[msg.sender] += msg.value;
         s_funders.push(msg.sender);
     }
